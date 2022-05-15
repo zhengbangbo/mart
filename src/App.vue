@@ -2,7 +2,8 @@
   <div>
     <Header />
     <router-view />
-    <Footer />
+    <!-- 在 Home、Search 显示的，在登录、注册隐藏 -->
+    <Footer v-show="$route.meta.show"/>
   </div>
 </template>
 
@@ -13,7 +14,7 @@ export default {
   components: {
     Header,
     Footer
-  },
+},
 }
 </script>
 
