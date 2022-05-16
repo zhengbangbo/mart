@@ -57,15 +57,21 @@ export default {
   name: "iHeader",
   data() {
     return {
-      keyword: ''
-    }
+      keyword: "",
+    };
   },
   methods: {
     goSearch() {
       // 路由传递参数
       // this.$router.push("/search/" + this.keyword + "?k=" + this.keyword.toUpperCase())
       // this.$router.push(`/search/${this.keyword}?k=${this.keyword.toUpperCase()}`)
-      this.$router.push({name: "search", params: {keyword:this.keyword||undefined}, query: {k:this.keyword.toUpperCase()}})
+      let location = { name: "search" };
+      let params = { keyword: this.keyword || undefined};
+      location.params = params;
+      if (this.$route.query) {
+        location.query = this.$route.query;
+      }
+      this.$router.push(location);
       // this.$router.push("/search")
     },
   },

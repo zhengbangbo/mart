@@ -1,55 +1,57 @@
 <template>
   <div class="type-nav">
     <div class="container">
-      <div @mouseleave="leaveIndex()">
+      <div @mouseleave="leaveShow" @mouseenter="enterShow">
         <h2 class="all">全部商品分类</h2>
-        <div class="sort">
-          <div class="all-sort-list2" @click="goSearch">
-            <div
-              class="item"
-              v-for="(c1, index) in categoryList.slice(0, 16)"
-              :key="c1.categoryId"
-              :class="{ cur: currentIndex == index }"
-            >
-              <h3 @mouseenter="changeIndex(index)">
-                <a
-                  :data-categoryName="c1.categoryName"
-                  :data-category1Id="c1.categoryId"
-                  >{{ c1.categoryName }}</a
-                >
-              </h3>
+        <transition name="sort">
+          <div class="sort" v-show="show">
+            <div class="all-sort-list2" @click="goSearch">
               <div
-                class="item-list clearfix"
-                :style="{ display: currentIndex == index ? 'block' : 'none' }"
+                class="item"
+                v-for="(c1, index) in categoryList.slice(0, 16)"
+                :key="c1.categoryId"
+                :class="{ cur: currentIndex == index }"
               >
+                <h3 @mouseenter="changeIndex(index)">
+                  <a
+                    :data-categoryName="c1.categoryName"
+                    :data-category1Id="c1.categoryId"
+                    >{{ c1.categoryName }}</a
+                  >
+                </h3>
                 <div
-                  class="subitem"
-                  v-for="c2 in c1.categoryChild"
-                  :key="c2.categoryId"
+                  class="item-list clearfix"
+                  :style="{ display: currentIndex == index ? 'block' : 'none' }"
                 >
-                  <dl class="fore">
-                    <dt>
-                      <a
-                        :data-categoryName="c2.categoryName"
-                        :data-category2Id="c2.categoryId"
-                        >{{ c2.categoryName }}</a
-                      >
-                    </dt>
-                    <dd>
-                      <em v-for="c3 in c2.categoryChild" :key="c3.categoryId">
+                  <div
+                    class="subitem"
+                    v-for="c2 in c1.categoryChild"
+                    :key="c2.categoryId"
+                  >
+                    <dl class="fore">
+                      <dt>
                         <a
-                          :data-categoryName="c3.categoryName"
-                          :data-category3Id="c3.categoryId"
-                          >{{ c3.categoryName }}</a
+                          :data-categoryName="c2.categoryName"
+                          :data-category2Id="c2.categoryId"
+                          >{{ c2.categoryName }}</a
                         >
-                      </em>
-                    </dd>
-                  </dl>
+                      </dt>
+                      <dd>
+                        <em v-for="c3 in c2.categoryChild" :key="c3.categoryId">
+                          <a
+                            :data-categoryName="c3.categoryName"
+                            :data-category3Id="c3.categoryId"
+                            >{{ c3.categoryName }}</a
+                          >
+                        </em>
+                      </dd>
+                    </dl>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        </transition>
       </div>
       <nav class="nav">
         <a href="###">服装城</a>
@@ -75,10 +77,13 @@ export default {
     return {
       // 存储用户鼠标移动上哪一个一级分类
       currentIndex: null,
+      show: true,
     };
   },
   mounted() {
-    this.$store.dispatch("categoryList");
+    if (this.$route.path != "/home") {
+      this.show = false;
+    }
   },
   computed: {
     ...mapState({
@@ -91,8 +96,11 @@ export default {
     changeIndex: throttle(function (index) {
       this.currentIndex = index;
     }, 50),
-    leaveIndex() {
+    leaveShow() {
       this.currentIndex = null;
+      if (this.$route.path != "/home") {
+        this.show = false;
+      }
     },
     goSearch(event) {
       // best practice: 编程式导航 + 事件委派
@@ -100,7 +108,7 @@ export default {
       let { categoryname, category1id, category2id, category3id } =
         element.dataset;
       if (categoryname) {
-        let location = {name: "search"}
+        let location = { name: "search" };
         let query = { categoryName: categoryname };
         if (category1id) {
           query.category1Id = category1id;
@@ -109,10 +117,17 @@ export default {
         } else {
           query.category3Id = category3id;
         }
+        // 如果路由跳转的时候，带有params参数，捎带过去
+        if (this.$route.params) {
+          location.params = this.$route.params;
+        }
         location.query = query;
         console.log(location);
         this.$router.push(location);
       }
+    },
+    enterShow() {
+      this.show = true;
     },
   },
 };
@@ -233,6 +248,18 @@ export default {
           background-color: skyblue;
         }
       }
+    }
+
+    .sort-enter {
+      height: 0;
+    }
+
+    .sort-enter-to {
+      height: 461px;
+    }
+
+    .sort-enter-active {
+      transition: all 0.5s linear;
     }
   }
 }

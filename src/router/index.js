@@ -27,15 +27,14 @@ export default new VueRouter({
 
     },
     {
-      path: '/search',
+      path: '/search/:keyword?',
       component: Search,
-      meta: { show: false },
+      meta: { show: true },
       name: "search",
     },
     {
       path: '/',
       redirect: '/home',
-      meta: { show: false }
     }
   ]
 })
