@@ -18,6 +18,7 @@ import TheRank from "@/views/Home/TheRank";
 import TheLike from "@/views/Home/TheLike";
 import TheFloor from "@/views/Home/TheFloor";
 import TheBrand from "@/views/Home/TheBrand";
+
 export default {
   name: "iHome",
   components: {
