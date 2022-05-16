@@ -13,30 +13,29 @@ export default new VueRouter({
     {
       path: '/home',
       component: Home,
-      meta: {show:true}
+      meta: { show: true }
     },
     {
       path: '/login',
       component: Login,
-      meta: {show:true}
+      meta: { show: true }
     },
     {
       path: '/register',
       component: Register,
-      meta: {show:false}
+      meta: { show: false }
 
     },
     {
-      path: '/search/:keyword',
+      path: '/search',
       component: Search,
-      meta: {show:false},
+      meta: { show: false },
       name: "search",
-      props: true
     },
     {
       path: '/',
       redirect: '/home',
-      meta: {show:false}
+      meta: { show: false }
     }
   ]
 })
