@@ -96,7 +96,8 @@
 
 <script>
 import { mapState } from "vuex";
-import Swiper from "swiper";
+import Swiper from "swiper/bundle";
+import "swiper/css/bundle";
 export default {
   name: "ListContainer",
   mounted() {
@@ -106,17 +107,17 @@ export default {
       new Swiper(".swiper", {
         direction: "horizontal", // 垂直切换选项
         loop: true, // 循环模式选项
-
-        // 如果需要分页器
+        // If we need pagination
         pagination: {
           el: ".swiper-pagination",
+          clickable: true,
         },
 
-        // 如果需要前进后退按钮
+        // Navigation arrows
         navigation: {
           nextEl: ".swiper-button-next",
           prevEl: ".swiper-button-prev",
-        }
+        },
       });
     }, 2000);
   },
