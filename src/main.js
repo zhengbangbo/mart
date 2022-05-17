@@ -4,11 +4,12 @@ import App from './App.vue'
 import TypeNav from '@/components/TypeNav'
 Vue.component(TypeNav.name, TypeNav)
 
-// import router
 import router from '@/router'
 
-// import store
 import store from '@/store'
+
+// 引入，即执行一次
+import '@/mock/mockServe'
 
 Vue.config.productionTip = false
 new Vue({
