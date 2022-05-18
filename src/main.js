@@ -18,6 +18,9 @@ import "swiper/css/bundle"
 Vue.config.productionTip = false
 new Vue({
   render: h => h(App),
+  beforeCreate() {
+    Vue.prototype.$bus = this
+  },
   // signup router
   // $route: get route info(path/query/params)
   // $router: navigate to other pages(push/replace)

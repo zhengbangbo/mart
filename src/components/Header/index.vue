@@ -60,6 +60,11 @@ export default {
       keyword: "",
     };
   },
+  mounted() {
+    this.$bus.$on("clear", () => {
+      this.keyword = ""
+    })
+  },
   methods: {
     goSearch() {
       // 路由传递参数

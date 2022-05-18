@@ -4,17 +4,21 @@
     <div class="main">
       <div class="py-container">
         <!--bread 面包屑-->
-        <div class="bread">
+        <div class="bread" v-show="searchParams.categoryName || searchParams.keyword">
           <ul class="fl sui-breadcrumb">
             <li>
               <a href="#">全部结果</a>
             </li>
           </ul>
           <ul class="fl sui-tag">
-            <li class="with-x">手机</li>
-            <li class="with-x">iphone<i>×</i></li>
-            <li class="with-x">华为<i>×</i></li>
-            <li class="with-x">OPPO<i>×</i></li>
+            <li class="with-x" v-show="searchParams.categoryName">
+              {{ searchParams.categoryName
+              }}<i @click="removeCategoryName">×</i>
+            </li>
+            <li class="with-x" v-show="searchParams.keyword">
+              {{ searchParams.keyword
+              }}<i @click="removeKeyword">×</i>
+            </li>
           </ul>
         </div>
 
@@ -144,7 +148,7 @@ export default {
       },
     };
   },
-  beforeMount () {
+  beforeMount() {
     Object.assign(this.searchParams, this.$route.query, this.$route.params);
   },
   mounted() {
@@ -156,6 +160,30 @@ export default {
   methods: {
     getNewData() {
       this.$store.dispatch("getSearchInfo", this.searchParams);
+    },
+    removeCategoryName() {
+      this.searchParams.categoryName = undefined;
+      this.searchParams.category1Id = undefined;
+      this.searchParams.category2Id = undefined;
+      this.searchParams.category3Id = undefined;
+      this.getNewData();
+      // 需要同步修改路由
+      this.$router.push({name: "search", params: this.$route.params});
+    },
+    removeKeyword() {
+      this.searchParams.keyword = undefined;
+      this.getNewData();
+      this.$bus.$emit("clear")
+      this.$router.push({name: "search", query: this.$route.query});
+    },
+  },
+  watch: {
+    $route() {
+      this.searchParams.category1Id = undefined;
+      this.searchParams.category2Id = undefined;
+      this.searchParams.category3Id = undefined;
+      Object.assign(this.searchParams, this.$route.query, this.$route.params);
+      this.getNewData();
     },
   },
 };
