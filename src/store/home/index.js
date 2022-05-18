@@ -10,7 +10,6 @@ const mutations = {
     state.categoryList = categoryList
   },
   BANNER_LIST(state, bannerList) {
-    console.log('修改仓库数据')
     state.bannerList = bannerList
   },
   FLOOR_LIST(state, floorList) {
@@ -25,7 +24,6 @@ const actions = {
     }
   },
   async BannerList({commit}) {
-    console.log('获取服务器数据')
     let result = await reqBannerList()
     console.log(result)
     if (result.code == 200) {
