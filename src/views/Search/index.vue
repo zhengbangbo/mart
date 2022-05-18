@@ -4,9 +4,7 @@
     <div class="main">
       <div class="py-container">
         <!--bread 面包屑-->
-        <div
-          class="bread"
-        >
+        <div class="bread">
           <ul class="fl sui-breadcrumb">
             <li>
               <a href="#">全部结果</a>
@@ -21,14 +19,18 @@
               {{ searchParams.keyword }}<i @click="removeKeyword">×</i>
             </li>
             <li class="with-x" v-if="searchParams.trademark">
-              {{ searchParams.trademark.split(':')[1]
+              {{ searchParams.trademark.split(":")[1]
               }}<i @click="removeTrademark">×</i>
+            </li>
+            <li class="with-x" v-for="prop in searchParams.props" :key="prop">
+              {{ prop.split(":")[1] }}
+              <i @click="removeProp(prop)">×</i>
             </li>
           </ul>
         </div>
 
         <!--selector-->
-        <SearchSelector @trademarkInfo="trademarkInfo" />
+        <SearchSelector @trademarkInfo="trademarkInfo" @attrInfo="attrInfo" />
 
         <!--details-->
         <div class="details clearfix">
@@ -185,9 +187,21 @@ export default {
       this.searchParams.trademark = undefined;
       this.getNewData();
     },
+    // TODO: 相较于传索引，传元素有哪些利弊？
+    removeProp(prop) {
+      this.searchParams.props.pop(prop);
+      this.getNewData();
+    },
     trademarkInfo(trademark) {
       this.searchParams.trademark = `${trademark.tmId}:${trademark.tmName}`;
       this.getNewData();
+    },
+    attrInfo(attr, value) {
+      let prop = `${attr.attrId}:${value}:${attr.attrName}`;
+      if (this.searchParams.props.indexOf(prop) === -1) {
+        this.searchParams.props.push(prop);
+        this.getNewData();
+      }
     },
   },
   watch: {
