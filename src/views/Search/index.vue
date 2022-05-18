@@ -4,26 +4,31 @@
     <div class="main">
       <div class="py-container">
         <!--bread 面包屑-->
-        <div class="bread" v-show="searchParams.categoryName || searchParams.keyword">
+        <div
+          class="bread"
+        >
           <ul class="fl sui-breadcrumb">
             <li>
               <a href="#">全部结果</a>
             </li>
           </ul>
           <ul class="fl sui-tag">
-            <li class="with-x" v-show="searchParams.categoryName">
+            <li class="with-x" v-if="searchParams.categoryName">
               {{ searchParams.categoryName
               }}<i @click="removeCategoryName">×</i>
             </li>
-            <li class="with-x" v-show="searchParams.keyword">
-              {{ searchParams.keyword
-              }}<i @click="removeKeyword">×</i>
+            <li class="with-x" v-if="searchParams.keyword">
+              {{ searchParams.keyword }}<i @click="removeKeyword">×</i>
+            </li>
+            <li class="with-x" v-if="searchParams.trademark">
+              {{ searchParams.trademark.split(':')[1]
+              }}<i @click="removeTrademark">×</i>
             </li>
           </ul>
         </div>
 
         <!--selector-->
-        <SearchSelector />
+        <SearchSelector @trademarkInfo="trademarkInfo" />
 
         <!--details-->
         <div class="details clearfix">
@@ -168,13 +173,21 @@ export default {
       this.searchParams.category3Id = undefined;
       this.getNewData();
       // 需要同步修改路由
-      this.$router.push({name: "search", params: this.$route.params});
+      this.$router.push({ name: "search", params: this.$route.params });
     },
     removeKeyword() {
       this.searchParams.keyword = undefined;
       this.getNewData();
-      this.$bus.$emit("clear")
-      this.$router.push({name: "search", query: this.$route.query});
+      this.$bus.$emit("clear");
+      this.$router.push({ name: "search", query: this.$route.query });
+    },
+    removeTrademark() {
+      this.searchParams.trademark = undefined;
+      this.getNewData();
+    },
+    trademarkInfo(trademark) {
+      this.searchParams.trademark = `${trademark.tmId}:${trademark.tmName}`;
+      this.getNewData();
     },
   },
   watch: {

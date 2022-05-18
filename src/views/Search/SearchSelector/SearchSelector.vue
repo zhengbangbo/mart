@@ -4,7 +4,13 @@
       <div class="fl key brand">品牌</div>
       <div class="value logos">
         <ul class="logo-list">
-          <li v-for="trademark in trademarkList" :key="trademark.tmId">{{trademark.tmName}}</li>
+          <li
+            v-for="trademark in trademarkList"
+            :key="trademark.tmId"
+            @click="trademarkHandler(trademark)"
+          >
+            {{ trademark.tmName }}
+          </li>
         </ul>
       </div>
       <div class="ext">
@@ -13,11 +19,11 @@
       </div>
     </div>
     <div class="type-wrap" v-for="attr in attrsList" :key="attr.attrId">
-      <div class="fl key">{{attr.attrName}}</div>
+      <div class="fl key">{{ attr.attrName }}</div>
       <div class="fl value">
         <ul class="type-list">
-          <li v-for="value,index in attr.attrValueList" :key="index">
-            <a>{{value}}</a>
+          <li v-for="(value, index) in attr.attrValueList" :key="index">
+            <a>{{ value }}</a>
           </li>
         </ul>
       </div>
@@ -33,6 +39,13 @@ export default {
   computed: {
     ...mapGetters(["trademarkList", "attrsList"]),
   },
+  methods: {
+    trademarkHandler(trademark) {
+      console.log("子组件");
+      this.$emit("trademarkInfo", trademark); // 子组件给父组件传递数据
+    },
+  },
+
 };
 </script>
 
