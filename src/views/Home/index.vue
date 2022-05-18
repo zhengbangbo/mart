@@ -5,7 +5,7 @@
     <TodayRecommend />
     <TheRank />
     <TheLike />
-    <TheFloor />
+    <TheFloor v-for="floor in floorList" :key="floor.id" :list="floor"/>
     <TheBrand />
   </div>
 </template>
@@ -19,6 +19,8 @@ import TheLike from "@/views/Home/TheLike";
 import TheFloor from "@/views/Home/TheFloor";
 import TheBrand from "@/views/Home/TheBrand";
 
+import { mapState } from "vuex";
+
 export default {
   name: "iHome",
   components: {
@@ -28,6 +30,14 @@ export default {
     TheLike,
     TheFloor,
     TheBrand,
+  },
+  mounted() {
+    this.$store.dispatch("FloorList");
+  },
+  computed: {
+    ...mapState({
+      floorList: (state) => state.home.floorList,
+    }),
   },
 };
 </script>
