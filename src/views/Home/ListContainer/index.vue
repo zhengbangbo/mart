@@ -3,7 +3,7 @@
     <div class="sortList clearfix">
       <div class="center">
         <!--banner轮播-->
-        <div class="swiper" id="mySwiper">
+        <div class="swiper" ref="mySwiper">
           <div class="swiper-wrapper">
             <div
               class="swiper-slide"
@@ -103,28 +103,34 @@ export default {
   mounted() {
     console.log("mounted");
     this.$store.dispatch("BannerList");
-    setTimeout(() => {
-      new Swiper(".swiper", {
-        direction: "horizontal", // 垂直切换选项
-        loop: true, // 循环模式选项
-        // If we need pagination
-        pagination: {
-          el: ".swiper-pagination",
-          clickable: true,
-        },
-
-        // Navigation arrows
-        navigation: {
-          nextEl: ".swiper-button-next",
-          prevEl: ".swiper-button-prev",
-        },
-      });
-    }, 2000);
   },
   computed: {
     ...mapState({
       bannerList: (state) => state.home.bannerList,
     }),
+  },
+  watch: {
+    bannerList: {
+      handler() {
+        this.$nextTick(() => {
+          new Swiper(this.$refs.mySwiper, {
+            direction: "horizontal", // 垂直切换选项
+            loop: true, // 循环模式选项
+            // If we need pagination
+            pagination: {
+              el: ".swiper-pagination",
+              clickable: true,
+            },
+
+            // Navigation arrows
+            navigation: {
+              nextEl: ".swiper-button-next",
+              prevEl: ".swiper-button-prev",
+            },
+          });
+        });
+      },
+    },
   },
 };
 </script>
