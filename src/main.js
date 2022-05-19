@@ -3,8 +3,10 @@ import App from './App.vue'
 
 import TheCarousel from '@/components/Carousel'
 import TypeNav from '@/components/TypeNav'
+import ThePagination from '@/components/Pagination'
 Vue.component(TypeNav.name, TypeNav)
 Vue.component(TheCarousel.name, TheCarousel)
+Vue.component(ThePagination.name, ThePagination)
 
 import router from '@/router'
 
