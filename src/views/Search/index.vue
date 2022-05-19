@@ -96,7 +96,12 @@
               </li>
             </ul>
           </div>
-          <ThePagination/>
+          <ThePagination
+            :info="pageInfo"
+            @previousPage="previousPage"
+            @nextPage="nextPage"
+            @gotoPage="gotoPage"
+          />
         </div>
       </div>
     </div>
@@ -110,7 +115,7 @@ export default {
   name: "SearchView",
   components: {
     SearchSelector,
-},
+  },
   data() {
     return {
       searchParams: {
@@ -134,7 +139,7 @@ export default {
     this.getNewData();
   },
   computed: {
-    ...mapGetters(["goodsList"]),
+    ...mapGetters(["goodsList", "pageInfo"]),
     isOne() {
       return this.searchParams.order.indexOf(1) != -1;
     },
@@ -191,14 +196,38 @@ export default {
       let originOrder = this.searchParams.order;
       let originFlag = originOrder.split(":")[0];
       let originSort = originOrder.split(":")[1];
-      let newOrder = ""
+      let newOrder = "";
       if (flag == originFlag) {
-        newOrder = originFlag + ":" + (originSort == "desc" ? "asc" : "desc");
+        newOrder = `${originFlag}:${originSort == "desc" ? "asc" : "desc"}`;
       } else {
-        newOrder = flag + ":" + "desc";
+        newOrder = `${flag}:desc`;
       }
       this.searchParams.order = newOrder;
-      this.getNewData()
+      this.getNewData();
+    },
+    previousPage() {
+      if (this.searchParams.pageNo <= 1) {
+        alert("已经是第一页了");
+        return;
+      }
+      this.searchParams.pageNo = this.pageInfo.pageNo - 1;
+      this.getNewData();
+    },
+    nextPage() {
+      if (this.searchParams.pageNo >= this.pageInfo.totalPages) {
+        alert("已经是最后一页了");
+        return;
+      }
+      this.searchParams.pageNo = this.pageInfo.pageNo + 1;
+      this.getNewData();
+    },
+    gotoPage(pageNo) {
+      if (pageNo < 1 || pageNo > this.pageInfo.totalPages) {
+        alert("超出范围");
+        return;
+      }
+      this.searchParams.pageNo = pageNo;
+      this.getNewData();
     },
   },
   watch: {

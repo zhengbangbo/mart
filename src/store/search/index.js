@@ -25,8 +25,15 @@ const getters = {
   },
   trademarkList(state) {
     return state.searchInfo.trademarkList || []
+  },
+  pageInfo(state) {
+    let info = {}
+    info["total"] = state.searchInfo.total || 0
+    info["pageSize"] = state.searchInfo.pageSize || 0
+    info["pageNo"] = state.searchInfo.pageNo || 0
+    info["totalPages"] = state.searchInfo.totalPages || 0
+    return info
   }
-
 }
 
 export default {
