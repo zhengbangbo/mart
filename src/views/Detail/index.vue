@@ -8,9 +8,15 @@
       <!-- 导航路径区域 -->
       <div class="conPoin">
         <div class="conPoin">
-          <a v-show="categoryView.category1Name">{{categoryView.category1Name}}</a>
-          <a v-show="categoryView.category2Name">{{categoryView.category2Name}}</a>
-          <a v-show="categoryView.category3Name">{{categoryView.category3Name}}</a>
+          <a v-show="categoryView.category1Name">{{
+            categoryView.category1Name
+          }}</a>
+          <a v-show="categoryView.category2Name">{{
+            categoryView.category2Name
+          }}</a>
+          <a v-show="categoryView.category3Name">{{
+            categoryView.category3Name
+          }}</a>
         </div>
       </div>
       <!-- 主要内容区域 -->
@@ -18,26 +24,13 @@
         <!-- 左侧放大镜区域 -->
         <div class="previewWrap">
           <!--放大镜效果-->
-          <div class="preview">
-            <div class="jqzoom">
-              <img src="./images/s1.png" />
-            </div>
-          </div>
-          <!--下方的缩略图-->
-          <div class="specScroll">
-            <!--左按钮-->
-            <a class="prev">&lt;</a>
-            <!-- 中间可滑动区域 -->
-            <div class="items">
-              <div class="itemsCon"></div>
-            </div>
-            <!--右按钮-->
-            <a class="next">&gt;</a>
-          </div>
+          <Zoom :skuImageList="skuImageList" />
+          <!-- 小图列表 -->
+          <ImageList :skuImageList="skuImageList" />
         </div>
         <!-- 右侧选择区域布局 -->
         <div class="InfoWrap">
-                    <div class="goodsDetail">
+          <div class="goodsDetail">
             <h3 class="InfoName">
               {{ skuInfo.skuName }}
             </h3>
@@ -338,13 +331,20 @@
 </template>
 
 <script>
-// import ImageList from './ImageList'
-// import Zoom from './Zoom'
+import ImageList from './ImageList/ImageList'
+import Zoom from "./Zoom/Zoom";
 import { mapGetters } from "vuex";
 export default {
   name: "iDetail",
+  components: {
+    ImageList,
+    Zoom,
+  },
   computed: {
     ...mapGetters(["valuesSkuJson", "categoryView", "skuInfo"]),
+    skuImageList() {
+      return this.skuInfo.skuImageList || [];
+    },
   },
   mounted() {
     this.$store.dispatch("getDetailInfo", this.$route.params.id);

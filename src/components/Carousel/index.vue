@@ -20,6 +20,7 @@
 
 <script>
 import Swiper from "swiper/bundle";
+import "swiper/css/bundle"
 export default {
   name: "TheCarousel",
   props: ["list"],

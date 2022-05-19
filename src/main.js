@@ -15,7 +15,6 @@ import store from '@/store'
 // 引入，即执行一次
 import '@/mock/mockServe'
 
-import "swiper/css/bundle"
 
 Vue.config.productionTip = false
 new Vue({
