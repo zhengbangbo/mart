@@ -9,3 +9,4 @@ export const reqFloorList = () => mockRequests({ url: '/floor', method: 'get' })
 
 export const reqSearchInfo = (data) => requests({ url: '/list', method: 'post', data: data })
 
+export const reqDetailInfo = (skuId) => requests({ url: `/item/${skuId}`, method: 'get'})
