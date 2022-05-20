@@ -83,6 +83,17 @@
           <div class="choose">
             <div class="chooseArea">
               <div class="choosed"></div>
+              <dl v-for="attr in spuSaleAttrList" :key="attr.id">
+                <dt class="title">{{ attr.saleAttrName }}</dt>
+                <dd
+                  :class="{active: value.isChecked == 1}"
+                  @click="chooseActive(value, attr.spuSaleAttrValueList)"
+                  v-for="value in attr.spuSaleAttrValueList"
+                  :key="value.id"
+                >
+                  {{ value.saleAttrValueName }}
+                </dd>
+              </dl>
             </div>
 
             <div class="cartWrap">
@@ -331,7 +342,7 @@
 </template>
 
 <script>
-import ImageList from './ImageList/ImageList'
+import ImageList from "./ImageList/ImageList";
 import Zoom from "./Zoom/Zoom";
 import { mapGetters } from "vuex";
 export default {
@@ -341,13 +352,27 @@ export default {
     Zoom,
   },
   computed: {
-    ...mapGetters(["valuesSkuJson", "categoryView", "skuInfo"]),
+    ...mapGetters([
+      "valuesSkuJson",
+      "categoryView",
+      "skuInfo",
+      "spuSaleAttrList",
+    ]),
     skuImageList() {
       return this.skuInfo.skuImageList || [];
     },
   },
   mounted() {
     this.$store.dispatch("getDetailInfo", this.$route.params.id);
+  },
+  methods: {
+    chooseActive(attrValue, attr) {
+      console.log(attrValue, attr);
+      attr.forEach(item => {
+        item.isChecked = 0;
+      })
+      attrValue.isChecked = 1;
+    },
   },
 };
 </script>
@@ -576,7 +601,8 @@ export default {
                 border-right: 1px solid #bbb;
                 border-bottom: 1px solid #bbb;
                 border-left: 1px solid #eee;
-                &:nth-of-type(1) {
+                &.active {
+                  // &:nth-of-type(1) {
                   color: red;
                 }
               }
