@@ -86,7 +86,7 @@
               <dl v-for="attr in spuSaleAttrList" :key="attr.id">
                 <dt class="title">{{ attr.saleAttrName }}</dt>
                 <dd
-                  :class="{active: value.isChecked == 1}"
+                  :class="{ active: value.isChecked == 1 }"
                   @click="chooseActive(value, attr.spuSaleAttrValueList)"
                   v-for="value in attr.spuSaleAttrValueList"
                   :key="value.id"
@@ -98,9 +98,9 @@
 
             <div class="cartWrap">
               <div class="controls">
-                <input autocomplete="off" value="1" class="itxt" />
-                <a href="###" class="plus">+</a>
-                <a href="###" class="mins">-</a>
+                <input autocomplete="off" v-model="skuNum" class="itxt" @change="changeSkuNum"/>
+                <a href="###" class="plus" @click="plus">+</a>
+                <a href="###" class="mins" @click="mins">-</a>
               </div>
               <div class="add">
                 <a href="###" target="_blank">加入购物车</a>
@@ -347,6 +347,11 @@ import Zoom from "./Zoom/Zoom";
 import { mapGetters } from "vuex";
 export default {
   name: "iDetail",
+  data() {
+    return {
+      skuNum: 1
+    }
+  },
   components: {
     ImageList,
     Zoom,
@@ -373,6 +378,25 @@ export default {
       })
       attrValue.isChecked = 1;
     },
+    changeSkuNum(event) {
+      // 过滤用户输入的非数字
+      let value = event.target.value * 1
+      if (isNaN(value) || value < 1) {
+        this.skuNum = 1
+      } else {
+        this.skuNum = parseInt(value)
+      }
+    },
+    plus() {
+      if (this.skuNum < 100) {
+        this.skuNum++;
+      }
+    },
+    mins() {
+      if (this.skuNum > 1) {
+        this.skuNum--;
+      }
+    }
   },
 };
 </script>
