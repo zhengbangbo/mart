@@ -17,17 +17,19 @@ export default {
   props: ["skuImageList"],
   computed: {
     imgObj() {
-      return this.skuImageList[0] || {};
+      return this.skuImageList[this.index] || [];
     }
-  },
-  beforeCreate() {
-    console.log(this.skuImageList + "----------------");
   },
   data() {
     return{
       index: 0,
     }
-  }
+  },
+  mounted() {
+    this.$bus.$on("imgIndex", (index) => {
+      this.index = index;
+    })
+  },
 };
 </script>
 

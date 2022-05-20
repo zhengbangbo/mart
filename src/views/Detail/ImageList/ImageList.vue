@@ -1,13 +1,15 @@
 <template>
-  <div class="swiper" ref="mySwiper">
+  <div class="swiper" ref="cur">
     <div class="swiper-wrapper">
       <div
         class="swiper-slide"
-        v-for="(slide) in skuImageList"
+        v-for="(slide, index) in skuImageList"
         :key="slide.id"
       >
         <img
+          :class="{ active: currentIndex == index }"
           :src="slide.imgUrl"
+          @click="chooseImg(index)"
         />
       </div>
     </div>
@@ -17,9 +19,38 @@
 </template>
 
 <script>
+import Swiper from "swiper/bundle";
+import "swiper/css/bundle";
 export default {
   name: "ImageList",
   props: ["skuImageList"],
+  data() {
+    return {
+      currentIndex: 0,
+    };
+  },
+  methods: {
+    chooseImg(index) {
+      this.currentIndex = index;
+      // 兄弟通信
+      this.$bus.$emit("imgIndex", index)
+    },
+  },
+  watch: {
+    // 监听只能保证数据，不能保证DOM
+    skuImageList() {
+      this.$nextTick(() => {
+        new Swiper(this.$refs.cur, {
+          slidesPerView: "3",
+          
+          navigation: {
+            nextEl: ".swiper-button-next",
+            prevEl: ".swiper-button-prev",
+          },
+        });
+      });
+    },
+  },
 };
 </script>
 
