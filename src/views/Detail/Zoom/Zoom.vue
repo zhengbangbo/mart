@@ -1,11 +1,9 @@
 <template>
   <div class="spec-preview">
     <img :src="imgObj.imgUrl" />
-    <div class="event"></div>
-    <div class="big">
-      <img
-        :src="imgObj.imgUrl"
-      />
+    <div class="event" @mousemove="handler"></div>
+    <div class="big" >
+      <img :src="imgObj.imgUrl" ref="big"/>
     </div>
     <div class="mask" ref="mask"></div>
   </div>
@@ -18,17 +16,41 @@ export default {
   computed: {
     imgObj() {
       return this.skuImageList[this.index] || [];
-    }
+    },
   },
   data() {
-    return{
+    return {
       index: 0,
-    }
+    };
   },
   mounted() {
     this.$bus.$on("imgIndex", (index) => {
       this.index = index;
-    })
+    });
+  },
+  methods: {
+    handler(event) {
+      let mask = this.$refs.mask;
+      let big = this.$refs.big;
+      let left = event.offsetX - mask.offsetWidth / 2;
+      let top = event.offsetY - mask.offsetHeight / 2;
+      // 约束范围
+      if (left < 0) {
+        left = 0;
+      } else if (left > mask.offsetWidth) {
+        left = mask.offsetWidth;
+      }
+      if (top < 0) {
+        top = 0;
+      } else if (top > mask.offsetHeight) {
+        top = mask.offsetHeight;
+      }
+      mask.style.left = left + "px";
+      mask.style.top = top + "px";
+
+      big.style.left = -2 * left + "px";
+      big.style.top = -2 * top + "px";
+    },
   },
 };
 </script>
