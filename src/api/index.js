@@ -12,3 +12,5 @@ export const reqSearchInfo = (data) => requests({ url: '/list', method: 'post', 
 export const reqDetailInfo = (skuId) => requests({ url: `/item/${skuId}`, method: 'get'})
 
 export const reqAddOrUpdateCart = (skuId, skuNum) => requests({ url: `/cart/addToCart/${skuId}/${skuNum}`, method: 'post'})
+
+export const reqCartList = () => requests({ url: '/cart/cartList', method: 'get'})
