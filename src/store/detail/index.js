@@ -1,6 +1,9 @@
 import { reqDetailInfo, reqAddOrUpdateCart } from "@/api"
+import { getUUID } from "@/utils/uuid_token"
+
 const state = {
-  detailInfo: {}
+  detailInfo: {},
+  uuid_token: getUUID()
 }
 const mutations = {
   DETAIL_INFO(state, detailInfo) {
