@@ -4,6 +4,7 @@ import Login from '@/views/Login'
 import Register from '@/views/Register'
 import Search from '@/views/Search'
 import Detail from '@/views/Detail'
+import AddCartSuccess from '@/views/AddCartSuccess'
 
 export default [
   {
@@ -37,4 +38,9 @@ export default [
     component: Detail,
     meta: { show: true },
   },
+  {
+    path: '/addcartsuccess',
+    component: AddCartSuccess,
+    meta: { show: true },
+  }
 ]

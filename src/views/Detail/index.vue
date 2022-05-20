@@ -98,12 +98,17 @@
 
             <div class="cartWrap">
               <div class="controls">
-                <input autocomplete="off" v-model="skuNum" class="itxt" @change="changeSkuNum"/>
+                <input
+                  autocomplete="off"
+                  v-model="skuNum"
+                  class="itxt"
+                  @change="changeSkuNum"
+                />
                 <a href="###" class="plus" @click="plus">+</a>
                 <a href="###" class="mins" @click="mins">-</a>
               </div>
               <div class="add">
-                <a href="###" target="_blank">加入购物车</a>
+                <a @click="reqCart">加入购物车</a>
               </div>
             </div>
           </div>
@@ -349,8 +354,8 @@ export default {
   name: "iDetail",
   data() {
     return {
-      skuNum: 1
-    }
+      skuNum: 1,
+    };
   },
   components: {
     ImageList,
@@ -373,18 +378,18 @@ export default {
   methods: {
     chooseActive(attrValue, attr) {
       console.log(attrValue, attr);
-      attr.forEach(item => {
+      attr.forEach((item) => {
         item.isChecked = 0;
-      })
+      });
       attrValue.isChecked = 1;
     },
     changeSkuNum(event) {
       // 过滤用户输入的非数字
-      let value = event.target.value * 1
+      let value = event.target.value * 1;
       if (isNaN(value) || value < 1) {
-        this.skuNum = 1
+        this.skuNum = 1;
       } else {
-        this.skuNum = parseInt(value)
+        this.skuNum = parseInt(value);
       }
     },
     plus() {
@@ -396,7 +401,20 @@ export default {
       if (this.skuNum > 1) {
         this.skuNum--;
       }
-    }
+    },
+    async reqCart() {
+      try {
+        await this.$store.dispatch("addOrUpdateCart", {
+          skuId: this.$route.params.id,
+          skuNum: this.skuNum,
+        });
+        sessionStorage.setItem("SKUINFO", JSON.stringify(this.skuInfo));
+        this.$router.push({
+          path: "/addcartsuccess",
+        });
+      } catch (e) {
+        alert(e.message)
+      }}
   },
 };
 </script>
