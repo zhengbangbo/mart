@@ -71,7 +71,7 @@
     <div class="cart-tool">
       <div class="select-all">
         <!-- 选中状态为所有的都选中,并且购物车不为空 -->
-        <input type="checkbox" id="quanxuan" :checked="allChecked" />
+        <input type="checkbox" id="quanxuan" :checked="allChecked" @click="toggleAllChecked"/>
         <!-- 1.优化用户体验 -->
         <label for="quanxuan">全选</label>
       </div>
@@ -128,7 +128,7 @@ export default {
       return sum;
     },
     allChecked() {
-      return this.cartInfoList.every((item) => item.isChecked == 1);
+      return this.cartInfoList.every((item) => item.isChecked == 1) && this.cartInfoList.length > 0;
     },
   },
   mounted() {
@@ -144,6 +144,14 @@ export default {
         skuId: cart.skuId,
         isChecked: checked,
       });
+      this.getData();
+    },
+    async toggleAllChecked() {
+      try {
+        await this.$store.dispatch("toggleAllChecked", this.allChecked?0:1);
+      } catch (e) {
+        alert(e);
+      }
       this.getData();
     },
     handler: throttle(async function (type, value, cart) {

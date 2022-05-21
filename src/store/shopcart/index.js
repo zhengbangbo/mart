@@ -1,4 +1,4 @@
-import { reqCartList, reqDeleteCart, reqToggleCheckedById} from '@/api'
+import { reqCartList, reqDeleteCart, reqToggleCheckedById } from '@/api'
 
 const state = {
   cartList: []
@@ -16,7 +16,7 @@ const actions = {
     }
   },
   async deleteCart({ commit }, skuId) {
-    if(commit) {commit = 1}
+    if (commit) { commit = 1 }
     let result = await reqDeleteCart(skuId)
     if (result.code === 200) {
       return "ok"
@@ -25,7 +25,7 @@ const actions = {
     }
   },
   async toggleCheckedById({ commit }, { skuId, isChecked }) {
-    if(commit) {commit = 1}
+    if (commit) { commit = 1 }
     let result = await reqToggleCheckedById(skuId, isChecked)
     if (result.code === 200) {
       return "ok"
@@ -33,7 +33,7 @@ const actions = {
       return Promise.reject(new Error("Failed"))
     }
   },
-  deleteChecked({dispatch, getters}) {
+  deleteChecked({ dispatch, getters }) {
     // 遍历购物车中所有的商品，如果商品的选中状态为true，则删除
     let PromiseAll = []
     getters.cartList.cartInfoList.forEach(item => {
@@ -41,8 +41,15 @@ const actions = {
       PromiseAll.push(promise)
     })
     return Promise.all(PromiseAll)
-  }
-
+  },
+  toggleAllChecked({ dispatch, getters }, isChecked) {
+    let PromiseAll = []
+    getters.cartList.cartInfoList.forEach(item => {
+      let promise = dispatch("toggleCheckedById", { skuId: item.skuId, isChecked: isChecked })
+      PromiseAll.push(promise)
+    })
+    return Promise.all(PromiseAll)
+  },
 }
 const getters = {
   cartList(state) {
