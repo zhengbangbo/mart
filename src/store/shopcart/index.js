@@ -1,4 +1,4 @@
-import { reqCartList, reqDeleteCart } from '@/api'
+import { reqCartList, reqDeleteCart, reqToggleCheckedById} from '@/api'
 
 const state = {
   cartList: []
@@ -16,7 +16,6 @@ const actions = {
     }
   },
   async deleteCart({ commit }, skuId) {
-    console.log(skuId)
     if(commit) {commit = 1}
     let result = await reqDeleteCart(skuId)
     if (result.code === 200) {
@@ -24,7 +23,17 @@ const actions = {
     } else {
       return Promise.reject(new Error("Failed"))
     }
-  }
+  },
+  async toggleCheckedById({ commit }, { skuId, isChecked }) {
+    if(commit) {commit = 1}
+    let result = await reqToggleCheckedById(skuId, isChecked)
+    if (result.code === 200) {
+      return "ok"
+    } else {
+      return Promise.reject(new Error("Failed"))
+    }
+  },
+    
 }
 const getters = {
   cartList(state) {

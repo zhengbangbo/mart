@@ -17,7 +17,7 @@
               type="checkbox"
               :checked="cart.isChecked == 1"
               name="chk_list"
-              @change="toggleChecked(cart, $event)"
+              @change="toggleCheckedById(cart, $event)"
             />
           </li>
           <li class="cart-list-con2">
@@ -96,6 +96,7 @@
 
 <script>
 import { mapGetters } from "vuex";
+import { throttle, debounce } from "lodash";
 export default {
   name: "ShopCart",
   computed: {
@@ -120,13 +121,18 @@ export default {
     this.getData();
   },
   methods: {
-    getData() {
+    getData: debounce(function() {
       this.$store.dispatch("cartList");
+    }, 1000),
+    toggleCheckedById(cart, e) {
+      let checked = e.target.checked? "1" : "0";
+      this.$store.dispatch("toggleCheckedById", {
+        skuId: cart.skuId,
+        isChecked: checked
+      });
+      this.getData();
     },
-    toggleChecked(cart, e) {
-      cart.isChecked = e.target.checked == 1 ? 0 : 1;
-    },
-    async handler(type, value, cart) {
+    handler: throttle(async function (type, value, cart) {
       switch (type) {
         case "plus":
           value = 1;
@@ -152,15 +158,15 @@ export default {
         alert(e);
       }
       this.getData();
-    },
-    async deleteCart(cart) {
+    }, 500),
+    deleteCart: throttle(async function (cart) {
       try {
         await this.$store.dispatch("deleteCart", cart.skuId);
       } catch (e) {
         alert(e);
       }
       this.getData();
-    },
+    }, 200),
   },
 };
 </script>

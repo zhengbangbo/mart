@@ -16,4 +16,5 @@ export const reqAddOrUpdateCart = (skuId, skuNum) => requests({ url: `/cart/addT
 export const reqCartList = () => requests({ url: '/cart/cartList', method: 'get'})
 
 export const reqDeleteCart = (skuId) => requests({ url: `/cart/deleteCart/${skuId}`, method: 'delete'})
-2
+
+export const reqToggleCheckedById = (skuId, isChecked) => requests({ url: `/cart/checkCart/${skuId}/${isChecked}`, method: 'get'})
