@@ -17,7 +17,7 @@
               type="checkbox"
               :checked="cart.isChecked == 1"
               name="chk_list"
-              @change="changeChecked(cart, $event)"
+              @change="toggleChecked(cart, $event)"
             />
           </li>
           <li class="cart-list-con2">
@@ -34,7 +34,7 @@
             <a
               href="javascript:void(0)"
               class="mins"
-              @click="handler('reduce', -1, cart)"
+              @click="handler('reduce', cart.skuNum, cart)"
               >-</a
             >
             <input
@@ -48,7 +48,7 @@
             <a
               href="javascript:void(0)"
               class="plus"
-              @click="handler('add', 1, cart)"
+              @click="handler('plus', cart.skuNum, cart)"
               >+</a
             >
           </li>
@@ -56,9 +56,7 @@
             <span class="sum">{{ cart.skuPrice * cart.skuNum }}</span>
           </li>
           <li class="cart-list-con7">
-            <a href="#none" class="sindelet" @click="removeCart(cart.skuId)"
-              >删除</a
-            >
+            <a class="sindelet">删除</a>
             <br />
             <a href="#none">移到收藏</a>
           </li>
@@ -68,32 +66,23 @@
     <div class="cart-tool">
       <div class="select-all">
         <!-- 选中状态为所有的都选中,并且购物车不为空 -->
-        <input
-          class="chooseAll"
-          :checked="isAllChecked && cartInfoList.length"
-          @change="changeAllCheckedPromise($event)"
-          type="checkbox"
-          id="quanxuan"
-        />
+        <input type="checkbox" id="quanxuan" :checked="allChecked" />
         <!-- 1.优化用户体验 -->
         <label for="quanxuan">全选</label>
       </div>
       <div class="option">
-        <a href="#none" @click="deleteSelectedGoodsPromise">删除选中的商品</a>
+        <a href="#none">删除选中的商品</a>
         <a href="#none">移到我的关注</a>
         <a href="#none">清除下柜商品</a>
       </div>
       <div class="money-box">
-        <div class="chosed">
-          已选择 <span>{{ checkedNum }}</span
-          >件商品
-        </div>
+        <div class="chosed">已选择 <span> 3 </span>件商品</div>
         <div class="sumprice">
           <em>总价（不含运费） ：</em>
           <i class="summoney">{{ totalPrice }}</i>
         </div>
         <div class="sumbtn">
-          <a class="sum-btn" @click="$router.push('/trade')">结算</a>
+          <a class="sum-btn">结算</a>
         </div>
       </div>
     </div>
@@ -107,7 +96,19 @@ export default {
   computed: {
     ...mapGetters(["cartList"]),
     cartInfoList() {
-      return this.cartList.cartInfoList;
+      return this.cartList.cartInfoList || [];
+    },
+    totalPrice() {
+      let sum = 0;
+      this.cartInfoList.forEach((cart) => {
+        if (cart.isChecked) {
+          sum += cart.skuPrice * cart.skuNum;
+        }
+      });
+      return sum;
+    },
+    allChecked() {
+      return this.cartInfoList.every((item) => item.isChecked == 1);
     },
   },
   mounted() {
@@ -116,6 +117,37 @@ export default {
   methods: {
     getData() {
       this.$store.dispatch("cartList");
+    },
+    toggleChecked(cart, e) {
+      cart.isChecked = e.target.checked == 1 ? 0 : 1;
+    },
+    async handler(type, value, cart) {
+      switch (type) {
+        case "plus":
+          value = 1;
+          break;
+        case "reduce":
+          if (cart.skuNum <= 1) return;
+          value = -1;
+          break;
+        case "change":
+          if (isNaN(value) || value < 1) {
+            this.getData();
+            return;
+          }
+          value = parseInt(value) - cart.skuNum;
+          break;
+      }
+      try {
+        await this.$store.dispatch("addOrUpdateCart", {
+          skuId: cart.skuId,
+          skuNum: value,
+        });
+        this.getData();
+      } catch (e) {
+        this.getData()
+        alert(e);
+      }
     },
   },
 };

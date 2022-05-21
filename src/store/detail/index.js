@@ -18,7 +18,7 @@ const actions = {
     }
   },
   async addOrUpdateCart({ commit }, { skuId, skuNum }) {
-    console.log(commit)
+    if (commit) {commit =1}
     let result = await reqAddOrUpdateCart(skuId, skuNum)
     if (result.code === 200) {
       return "ok"

@@ -33,7 +33,6 @@ export default {
     startPage() {
       let start = 0,
         end = 0;
-      console.log(this.info);
 
       if (this.info.totalPages <= 2) {
         start = 1;
@@ -53,12 +52,10 @@ export default {
           end = this.info.pageNo + 2;
         }
       }
-      console.log(start, end);
       let result = [];
       for (let i = start; i <= end; i++) {
         result.push(i);
       }
-      console.log(result);
       return result;
     },
   },

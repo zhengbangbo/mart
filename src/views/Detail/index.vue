@@ -377,7 +377,6 @@ export default {
   },
   methods: {
     chooseActive(attrValue, attr) {
-      console.log(attrValue, attr);
       attr.forEach((item) => {
         item.isChecked = 0;
       });
