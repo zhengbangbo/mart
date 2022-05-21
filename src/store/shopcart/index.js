@@ -1,4 +1,4 @@
-import { reqCartList } from '@/api'
+import { reqCartList, reqDeleteCart } from '@/api'
 
 const state = {
   cartList: []
@@ -13,6 +13,16 @@ const actions = {
     let result = await reqCartList()
     if (result.code == 200) {
       commit("CART_LIST", result.data)
+    }
+  },
+  async deleteCart({ commit }, skuId) {
+    console.log(skuId)
+    if(commit) {commit = 1}
+    let result = await reqDeleteCart(skuId)
+    if (result.code === 200) {
+      return "ok"
+    } else {
+      return Promise.reject(new Error("Failed"))
     }
   }
 }
