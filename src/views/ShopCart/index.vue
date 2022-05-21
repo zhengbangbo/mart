@@ -59,7 +59,7 @@
             <a
               class="sindelet"
               href="javascript:void(0)"
-              @click="deleteCart(cart)"
+              @click="deleteSkuById(cart)"
               >删除</a
             >
             <br />
@@ -76,12 +76,17 @@
         <label for="quanxuan">全选</label>
       </div>
       <div class="option">
-        <a href="#none">删除选中的商品</a>
+        <a href="javascript:void(0)" @click="deleteCheckedSku"
+          >删除选中的商品</a
+        >
         <a href="#none">移到我的关注</a>
         <a href="#none">清除下柜商品</a>
       </div>
       <div class="money-box">
-        <div class="chosed">已选择 <span> 3 </span>件商品</div>
+        <div class="chosed">
+          已选择 <span>{{ totalChecked }}</span
+          >件商品
+        </div>
         <div class="sumprice">
           <em>总价（不含运费） ：</em>
           <i class="summoney">{{ totalPrice }}</i>
@@ -104,6 +109,15 @@ export default {
     cartInfoList() {
       return this.cartList.cartInfoList || [];
     },
+    totalChecked() {
+      let sum = 0;
+      this.cartInfoList.forEach((cart) => {
+        if (cart.isChecked) {
+          sum++;
+        }
+      });
+      return sum;
+    },
     totalPrice() {
       let sum = 0;
       this.cartInfoList.forEach((cart) => {
@@ -121,14 +135,14 @@ export default {
     this.getData();
   },
   methods: {
-    getData: debounce(function() {
+    getData: debounce(function () {
       this.$store.dispatch("cartList");
     }, 1000),
     toggleCheckedById(cart, e) {
-      let checked = e.target.checked? "1" : "0";
+      let checked = e.target.checked ? "1" : "0";
       this.$store.dispatch("toggleCheckedById", {
         skuId: cart.skuId,
-        isChecked: checked
+        isChecked: checked,
       });
       this.getData();
     },
@@ -159,7 +173,7 @@ export default {
       }
       this.getData();
     }, 500),
-    deleteCart: throttle(async function (cart) {
+    deleteSkuById: throttle(async function (cart) {
       try {
         await this.$store.dispatch("deleteCart", cart.skuId);
       } catch (e) {
@@ -167,6 +181,14 @@ export default {
       }
       this.getData();
     }, 200),
+    async deleteCheckedSku() {
+      try {
+        await this.$store.dispatch("deleteChecked");
+      } catch (e) {
+        alert(e);
+      }
+      this.getData();
+    },
   },
 };
 </script>

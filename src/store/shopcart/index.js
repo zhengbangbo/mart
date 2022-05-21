@@ -33,7 +33,16 @@ const actions = {
       return Promise.reject(new Error("Failed"))
     }
   },
-    
+  deleteChecked({dispatch, getters}) {
+    // 遍历购物车中所有的商品，如果商品的选中状态为true，则删除
+    let PromiseAll = []
+    getters.cartList.cartInfoList.forEach(item => {
+      let promise = item.isChecked ? dispatch("deleteCart", item.skuId) : ""
+      PromiseAll.push(promise)
+    })
+    return Promise.all(PromiseAll)
+  }
+
 }
 const getters = {
   cartList(state) {
