@@ -12,6 +12,9 @@ requests.interceptors.request.use((config) => {
   if (store.state.detail.uuid_token) {
     config.headers.userTempId = store.state.detail.uuid_token
   }
+  if (localStorage.getItem('token')) {
+    config.headers.token = localStorage.getItem('token')
+  }
   nprogress.start()
   return config
 }, (error) => {

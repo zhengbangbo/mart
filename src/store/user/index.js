@@ -1,12 +1,12 @@
-import { reqSendCode, reqUserRegister } from "@/api"
+import { reqSendCode, reqUserRegister, reqUserLogin } from "@/api"
 const state = {
-  sendCode: ""
+  sendCode: "",
 }
 
 const mutations = {
   SEND_CODE(state, sendCode) {
     state.sendCode = sendCode
-  }
+  },
 }
 
 const actions = {
@@ -25,6 +25,16 @@ const actions = {
       return Promise.reject(new Error("Failed"))
     }
   },
+  async userLogin({ commit }, { phone, password }) {
+    if (commit) commit = 1
+    let result = await reqUserLogin(phone, password)
+    if (result.code === 200) {
+      localStorage.setItem("token", result.data.token)
+      return "ok"
+    } else {
+      return Promise.reject(new Error("Failed"))
+    }
+  }
 }
 const getters = {
 }

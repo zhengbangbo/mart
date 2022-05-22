@@ -16,31 +16,37 @@
           <form action="##">
             <div class="input-text clearFix">
               <i></i>
-              <input type="text" placeholder="手机号" />
+              <input type="text" v-model="phone" placeholder="手机号" />
               <span class="error-msg">错误提示信息</span>
             </div>
 
-            <div class="input-text clearFix">
+            <div class="input-text clearfix">
               <i class="pwd"></i>
-              <input type="text" placeholder="请输入密码" />
+              <input
+                type="password"
+                v-model="password"
+                placeholder="请输入密码"
+              />
               <span class="error-msg">错误提示信息</span>
             </div>
 
             <div class="setting clearFix">
               <label class="checkbox inline">
-                <input name="m1" type="checkbox" value="2" checked="" />
+                <input name="m1" type="checkbox" value="2" checked="0" />
                 自动登录
               </label>
               <span class="forget">忘记密码？</span>
             </div>
-            <button class="btn">登&nbsp;&nbsp;录</button>
+            <button class="btn" @click.prevent="userLogin">
+              登&nbsp;&nbsp;录
+            </button>
           </form>
           <div class="call clearFix">
             <ul>
-              <li><img src="images/qq.png" alt="" /></li>
-              <li><img src="images/sina.png" alt="" /></li>
-              <li><img src="images/ali.png" alt="" /></li>
-              <li><img src="images/weixin.png" alt="" /></li>
+              <li><img src="./images/qq.png" alt="" /></li>
+              <li><img src="./images/sina.png" alt="" /></li>
+              <li><img src="./images/ali.png" alt="" /></li>
+              <li><img src="./images/weixin.png" alt="" /></li>
             </ul>
             <a href="##" class="register">立即注册</a>
           </div>
@@ -62,15 +68,11 @@ export default {
   methods: {
     async userLogin() {
       try {
-        this.phone &&
-          this.password &&
-          (await this.$store.dispatch("userLogin", {
-            phone: this.phone,
-            password: this.password,
-          }));
-        // console.log(this.$route.query);
-        let toPath = this.$route.query.redirect || "/home";
-        this.$router.push(toPath);
+        const { phone, password } = this;
+        phone &&
+          password &&
+          (await this.$store.dispatch("userLogin", { phone, password }));
+        this.$router.replace("/home");
       } catch (error) {
         alert(error);
       }
