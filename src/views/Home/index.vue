@@ -5,7 +5,7 @@
     <TodayRecommend />
     <TheRank />
     <TheLike />
-    <TheFloor v-for="floor in floorList" :key="floor.id" :list="floor"/>
+    <TheFloor v-for="floor in floorList" :key="floor.id" :list="floor" />
     <TheBrand />
   </div>
 </template>
@@ -33,10 +33,12 @@ export default {
   },
   mounted() {
     this.$store.dispatch("FloorList");
+    this.$store.dispatch("userInfo");
   },
   computed: {
     ...mapState({
       floorList: (state) => state.home.floorList,
+      userInfo: (state) => state.user.userInfo,
     }),
   },
 };

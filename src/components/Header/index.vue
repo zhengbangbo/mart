@@ -5,10 +5,17 @@
       <div class="container">
         <div class="loginList">
           <p>尚品汇欢迎您！</p>
-          <p>
+          <p v-if="!userName">
             <span>请</span>
             <router-link to="/login">登录</router-link>
             <router-link class="register" to="/register">免费注册</router-link>
+          </p>
+          <p v-else>
+            <span>欢迎 </span>
+            <a>{{ userName }}</a>
+            <router-link to="/login" click="logout"
+              >退出登录</router-link
+            >
           </p>
         </div>
         <div class="typeList">
@@ -62,8 +69,8 @@ export default {
   },
   mounted() {
     this.$bus.$on("clear", () => {
-      this.keyword = ""
-    })
+      this.keyword = "";
+    });
   },
   methods: {
     goSearch() {
@@ -71,13 +78,21 @@ export default {
       // this.$router.push("/search/" + this.keyword + "?k=" + this.keyword.toUpperCase())
       // this.$router.push(`/search/${this.keyword}?k=${this.keyword.toUpperCase()}`)
       let location = { name: "search" };
-      let params = { keyword: this.keyword || undefined};
+      let params = { keyword: this.keyword || undefined };
       location.params = params;
       if (this.$route.query) {
         location.query = this.$route.query;
       }
       this.$router.push(location);
       // this.$router.push("/search")
+    },
+    logout() {
+      localStorage.clear("token");
+    },
+  },
+  computed: {
+    userName() {
+      return this.$store.state.user.userInfo.name;
     },
   },
 };

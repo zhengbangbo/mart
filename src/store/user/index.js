@@ -1,12 +1,16 @@
-import { reqSendCode, reqUserRegister, reqUserLogin } from "@/api"
+import { reqSendCode, reqUserRegister, reqUserLogin, reqUserInfo } from "@/api"
 const state = {
   sendCode: "",
+  userInfo: []
 }
 
 const mutations = {
   SEND_CODE(state, sendCode) {
     state.sendCode = sendCode
   },
+  USER_INFO(state, userInfo) {
+    state.userInfo = userInfo
+  }
 }
 
 const actions = {
@@ -34,7 +38,13 @@ const actions = {
     } else {
       return Promise.reject(new Error("Failed"))
     }
-  }
+  },
+  async userInfo({ commit }) {
+    let result = await reqUserInfo()
+    if (result.code === 200) {
+      commit("USER_INFO", result.data)
+    } 
+  },
 }
 const getters = {
 }
