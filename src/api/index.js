@@ -26,3 +26,5 @@ export const reqUserRegister = (phone, code, password, password1) => requests({ 
 export const reqUserLogin = (phone, password) => requests({ url: "/user/passport/login", method: 'post', data: { phone, password } })
 
 export const reqUserInfo = () => requests({ url: "/user/passport/auth/getUserInfo", method: 'get' })
+
+export const reqUserLogout = () => requests({ url: "/user/passport/logout", method: 'get' })

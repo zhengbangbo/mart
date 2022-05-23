@@ -13,9 +13,7 @@
           <p v-else>
             <span>欢迎 </span>
             <a>{{ userName }}</a>
-            <router-link to="/login" click="logout"
-              >退出登录</router-link
-            >
+            <a href="javascript:void(0);" @click="logout">退出登录</a>
           </p>
         </div>
         <div class="typeList">
@@ -84,10 +82,14 @@ export default {
         location.query = this.$route.query;
       }
       this.$router.push(location);
-      // this.$router.push("/search")
     },
-    logout() {
-      localStorage.clear("token");
+    async logout() {
+      try {
+        await this.$store.dispatch("userLogout");
+        this.$router.push("/home")
+      } catch (e) {
+        alert(e);
+      }
     },
   },
   computed: {
