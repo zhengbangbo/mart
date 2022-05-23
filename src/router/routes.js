@@ -6,6 +6,7 @@ import Search from '@/views/Search'
 import Detail from '@/views/Detail'
 import AddCartSuccess from '@/views/AddCartSuccess'
 import ShopCart from '@/views/ShopCart'
+import Trade from '@/views/Trade'
 
 export default [
   {
@@ -49,4 +50,9 @@ export default [
     component: ShopCart,
     meta: { show: true },
   },
+  {
+    path: '/trade',
+    component: Trade,
+    meta: { show: true },
+  }
 ]
