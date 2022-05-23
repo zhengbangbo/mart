@@ -32,3 +32,7 @@ export const reqUserLogout = () => requests({ url: "/user/passport/logout", meth
 export const reqUserAddressList = () => requests({ url: "/user/userAddress/auth/findUserAddressList", method: 'get' })
 
 export const reqOrderList = () => requests({ url: "/order/auth/trade", method: 'get' })
+
+export const reqOrderSubmit = (tradeNo, data) => requests({ url: `/order/auth/submitOrder?tradeNo=${tradeNo}`, data, method: 'post' })
+
+export const reqPayInfo = (tradeNo) => requests({ url: `/order/auth/payInfo?tradeNo=${tradeNo}`, method: 'get' })

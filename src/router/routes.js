@@ -7,6 +7,7 @@ import Detail from '@/views/Detail'
 import AddCartSuccess from '@/views/AddCartSuccess'
 import ShopCart from '@/views/ShopCart'
 import Trade from '@/views/Trade'
+import Pay from '@/views/Pay'
 
 export default [
   {
@@ -53,6 +54,11 @@ export default [
   {
     path: '/trade',
     component: Trade,
+    meta: { show: true },
+  },
+  {
+    path: '/pay',
+    component: Pay,
     meta: { show: true },
   }
 ]

@@ -3,11 +3,17 @@
     <h3 class="title">填写并核对订单信息</h3>
     <div class="content">
       <h5 class="receive">收件人信息</h5>
-      <div class="address clearFix" v-for="address in addressList" :key="address.id">
-        <span class="username " :class="{selected: address.isDefault == 1}">{{address.consignee}}</span>
+      <div
+        class="address clearFix"
+        v-for="address in addressList"
+        :key="address.id"
+      >
+        <span class="username" :class="{ selected: address.isDefault == 1 }">{{
+          address.consignee
+        }}</span>
         <p @click="changeDefault(address, addressList)">
-          <span class="s1">{{address.fullAddress}}</span>
-          <span class="s2">{{address.phoneNum}}</span>
+          <span class="s1">{{ address.fullAddress }}</span>
+          <span class="s2">{{ address.phoneNum }}</span>
           <span class="s3" v-if="address.isDefault == 1">默认地址</span>
         </p>
       </div>
@@ -28,20 +34,24 @@
       </div>
       <div class="detail">
         <h5>商品清单</h5>
-        <ul class="list clearFix" v-for="item in orderList.detailArrayList" :key="item.id">
+        <ul
+          class="list clearFix"
+          v-for="item in orderList.detailArrayList"
+          :key="item.id"
+        >
           <li>
-            <img style="width:100px" :src="item.imgUrl" alt="" />
+            <img style="width: 100px" :src="item.imgUrl" alt="" />
           </li>
           <li>
             <p>
-              {{item.skuName}}
+              {{ item.skuName }}
             </p>
             <h4>7天无理由退货</h4>
           </li>
           <li>
-            <h3>￥{{item.orderPrice}}</h3>
+            <h3>￥{{ item.orderPrice }}</h3>
           </li>
-          <li>X{{item.skuNum}}</li>
+          <li>X{{ item.skuNum }}</li>
           <li>有货</li>
         </ul>
       </div>
@@ -63,12 +73,17 @@
     <div class="money clearFix">
       <ul>
         <li>
-          <b><i>{{totalOrderNum}}</i>件商品，总商品金额</b>
-          <span>¥{{orderList.originalTotalAmount}}</span>
+          <b
+            ><i>{{ totalOrderNum }}</i
+            >件商品，总商品金额</b
+          >
+          <span>¥{{ orderList.originalTotalAmount }}</span>
         </li>
         <li>
           <b>返现：</b>
-          <span>¥{{orderList.originalTotalAmount - orderList.totalAmount}}</span>
+          <span
+            >¥{{ orderList.originalTotalAmount - orderList.totalAmount }}</span
+          >
         </li>
         <li>
           <b>运费：</b>
@@ -77,57 +92,81 @@
       </ul>
     </div>
     <div class="trade">
-      <div class="price">应付金额:<span>¥{{orderList.totalAmount}}</span></div>
+      <div class="price">
+        应付金额:<span>¥{{ orderList.totalAmount }}</span>
+      </div>
       <div class="receiveInfo">
         寄送至:
-        <span>{{userDefaultAddress.fullAddress}}</span>
-        收货人：<span>{{userDefaultAddress.consignee}}</span>
-        <span>{{userDefaultAddress.phoneNum}}</span>
+        <span>{{ userDefaultAddress.fullAddress }}</span>
+        收货人：<span>{{ userDefaultAddress.consignee }}</span>
+        <span>{{ userDefaultAddress.phoneNum }}</span>
       </div>
     </div>
     <div class="sub clearFix">
-      <router-link class="subBtn" to="/pay">提交订单</router-link>
+      <a href="javascript:void(0);" class="subBtn" @click="submitOrder"
+        >提交订单</a
+      >
     </div>
   </div>
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState } from "vuex";
 export default {
   name: "iTrade",
   data() {
     return {
       message: "",
+      orderId: ""
     };
   },
   computed: {
     ...mapState({
-      addressList: state => state.trade.addressList,
-      orderList: state => state.trade.orderList
+      addressList: (state) => state.trade.addressList,
+      orderList: (state) => state.trade.orderList,
     }),
     userDefaultAddress() {
-      return this.addressList.filter(item => item.isDefault == 1)[0];
+      return this.addressList.filter((item) => item.isDefault == 1)[0];
     },
     totalOrderNum() {
-      let sum = 0
-      this.orderList.detailArrayList.forEach(item => {
-        sum += item.skuNum
-      })
-      return sum
-    }
+      let sum = 0;
+      this.orderList.detailArrayList.forEach((item) => {
+        sum += item.skuNum;
+      });
+      return sum;
+    },
   },
   mounted() {
-    this.$store.dispatch("userAddressList")
-    this.$store.dispatch("orderList")
+    this.$store.dispatch("userAddressList");
+    this.$store.dispatch("orderList");
   },
   methods: {
     changeDefault(address, addressList) {
-      addressList.forEach(item => {
-        item.isDefault = 0
-      })
-      address.isDefault = 1
-    }
-  }
+      addressList.forEach((item) => {
+        item.isDefault = 0;
+      });
+      address.isDefault = 1;
+    },
+    async submitOrder() {
+      console.log(this.$API);
+      let tradeNo = this.orderList.tradeNo;
+      let data = {
+        consignee: this.userDefaultAddress.consignee,
+        consigneeTel: this.userDefaultAddress.phoneNum,
+        deliveryAddress: this.userDefaultAddress.fullAddress,
+        paymentWay: "ONLINE",
+        orderComment: this.message,
+        orderDetailList: this.orderList.detailArrayList
+      }      
+      let result = await this.$API.reqOrderSubmit(tradeNo, data);
+      if (result.code == 200) {
+        this.orderId = result.data
+        this.$router.push('/pay?orderId=' + this.orderId);
+      } else {
+        alert(result.data)
+      }
+    },
+  },
 };
 </script>
 

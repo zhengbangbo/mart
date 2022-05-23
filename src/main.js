@@ -15,12 +15,14 @@ import store from '@/store'
 // 引入，即执行一次
 import '@/mock/mockServe'
 
+import * as API from '@/api'
 
 Vue.config.productionTip = false
 new Vue({
   render: h => h(App),
   beforeCreate() {
     Vue.prototype.$bus = this
+    Vue.prototype.$API = API
   },
   // signup router
   // $route: get route info(path/query/params)
