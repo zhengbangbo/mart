@@ -35,4 +35,7 @@ export const reqOrderList = () => requests({ url: "/order/auth/trade", method: '
 
 export const reqOrderSubmit = (tradeNo, data) => requests({ url: `/order/auth/submitOrder?tradeNo=${tradeNo}`, data, method: 'post' })
 
-export const reqPayInfo = (tradeNo) => requests({ url: `/order/auth/payInfo?tradeNo=${tradeNo}`, method: 'get' })
+export const reqPayInfo = (orderId) => requests({url: `/payment/weixin/createNative/${orderId}`, method: 'get'})
+
+export const reqPayStatus = (orderId) => requests({ url: `/payment/weixin/queryPayStatus/${orderId}`, method: 'get' })
+

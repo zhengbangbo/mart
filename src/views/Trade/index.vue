@@ -117,7 +117,7 @@ export default {
   data() {
     return {
       message: "",
-      orderId: ""
+      orderId: "",
     };
   },
   computed: {
@@ -126,13 +126,15 @@ export default {
       orderList: (state) => state.trade.orderList,
     }),
     userDefaultAddress() {
-      return this.addressList.filter((item) => item.isDefault == 1)[0];
+      return this.addressList.filter((item) => item.isDefault == 1)[0] || {};
     },
     totalOrderNum() {
       let sum = 0;
-      this.orderList.detailArrayList.forEach((item) => {
-        sum += item.skuNum;
-      });
+      if (this.orderList.detailArrayList) {
+        this.orderList.detailArrayList.forEach((item) => {
+          sum += item.skuNum;
+        });
+      }
       return sum;
     },
   },
@@ -156,14 +158,14 @@ export default {
         deliveryAddress: this.userDefaultAddress.fullAddress,
         paymentWay: "ONLINE",
         orderComment: this.message,
-        orderDetailList: this.orderList.detailArrayList
-      }      
+        orderDetailList: this.orderList.detailArrayList,
+      };
       let result = await this.$API.reqOrderSubmit(tradeNo, data);
       if (result.code == 200) {
-        this.orderId = result.data
-        this.$router.push('/pay?orderId=' + this.orderId);
+        this.orderId = result.data;
+        this.$router.push("/pay?orderId=" + this.orderId);
       } else {
-        alert(result.data)
+        alert(result.data);
       }
     },
   },

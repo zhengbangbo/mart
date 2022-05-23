@@ -7,6 +7,9 @@ import ThePagination from '@/components/Pagination'
 Vue.component(TypeNav.name, TypeNav)
 Vue.component(TheCarousel.name, TheCarousel)
 Vue.component(ThePagination.name, ThePagination)
+import { MessageBox } from 'element-ui';
+Vue.prototype.$msgbox = MessageBox;
+Vue.prototype.$alert = MessageBox.alert;
 
 import router from '@/router'
 
