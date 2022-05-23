@@ -28,3 +28,7 @@ export const reqUserLogin = (phone, password) => requests({ url: "/user/passport
 export const reqUserInfo = () => requests({ url: "/user/passport/auth/getUserInfo", method: 'get' })
 
 export const reqUserLogout = () => requests({ url: "/user/passport/logout", method: 'get' })
+
+export const reqUserAddressList = () => requests({ url: "/user/userAddress/auth/findUserAddressList", method: 'get' })
+
+export const reqOrderList = () => requests({ url: "/order/auth/trade", method: 'get' })
