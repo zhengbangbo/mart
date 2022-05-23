@@ -4,6 +4,7 @@ import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 // config router
 import Routes from './routes'
+import store from '@/store'
 
 // 重写VueRouter的push方法,解决传递参数相同报错的问题,
 let originPush = VueRouter.prototype.push
@@ -43,10 +44,40 @@ VueRouter.prototype.replace = function (location, resolve, reject) {
   }
 };
 
-export default new VueRouter({
+let router = new VueRouter({
   routes: Routes,
   scrollBehavior() {
     return { y: 0 }
   }
 })
 
+router.beforeEach(async (to, from, next) => {
+  let token = store.state.user.token
+  let name = store.state.user.userInfo.name
+  if (token) {
+    if (to.path === '/login') {
+      next('/')
+    } else {
+      if (name) {
+        next()
+      } else {
+        try {
+          await store.dispatch('userInfo')
+          next()
+        } catch (error) {
+          // token 过期了，需要重新登录
+          await store.dispatch('userLogout')
+          next("/login")
+        }
+      }
+    }
+  } else {
+    next()
+  }
+})
+
+
+
+
+
+export default router

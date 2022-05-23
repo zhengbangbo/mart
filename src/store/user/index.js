@@ -42,7 +42,7 @@ const actions = {
   async userLogin({ commit }, { phone, password }) {
     let result = await reqUserLogin(phone, password)
     if (result.code === 200) {
-      commit("USER_LOGIN", result.data.token) 
+      commit("USER_LOGIN", result.data.token)
       localStorage.setItem("token", result.data.token)
     } else {
       return Promise.reject(new Error("Failed"))
@@ -52,6 +52,9 @@ const actions = {
     let result = await reqUserInfo()
     if (result.code === 200) {
       commit("USER_INFO", result.data)
+      return 'ok'
+    } else {
+      return Promise.reject(new Error("Failed"))
     }
   },
   async userLogout({ commit }) {
@@ -59,7 +62,7 @@ const actions = {
     if (result.code === 200) {
       commit("USER_LOGOUT")
       return 'ok'
-    }else {
+    } else {
       return Promise.reject(new Error("Failed"))
     }
   },
