@@ -20,6 +20,12 @@ import '@/mock/mockServe'
 
 import * as API from '@/api'
 
+import VueLazyload from 'vue-lazyload'
+import loading from '@/assets/loading.gif'
+Vue.use(VueLazyload, {
+  loading
+})
+
 Vue.config.productionTip = false
 new Vue({
   render: h => h(App),
