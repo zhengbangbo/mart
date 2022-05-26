@@ -97,7 +97,10 @@
             </ul>
           </div>
           <ThePagination
-            :info="pageInfo"
+            :pageNo = "pageNo"
+            :pageSize = "pageSize"
+            :total = "total"
+            :totalPages = "totalPages"
             @previousPage="previousPage"
             @nextPage="nextPage"
             @gotoPage="gotoPage"
@@ -139,7 +142,7 @@ export default {
     this.getNewData();
   },
   computed: {
-    ...mapGetters(["goodsList", "pageInfo"]),
+    ...mapGetters(["goodsList", "pageNo", "pageSize", "total", "totalPages"]),
     isOne() {
       return this.searchParams.order.indexOf(1) != -1;
     },
@@ -210,19 +213,19 @@ export default {
         alert("已经是第一页了");
         return;
       }
-      this.searchParams.pageNo = this.pageInfo.pageNo - 1;
+      this.searchParams.pageNo = this.pageNo - 1;
       this.getNewData();
     },
     nextPage() {
-      if (this.searchParams.pageNo >= this.pageInfo.totalPages) {
+      if (this.searchParams.pageNo >= this.totalPages) {
         alert("已经是最后一页了");
         return;
       }
-      this.searchParams.pageNo = this.pageInfo.pageNo + 1;
+      this.searchParams.pageNo = this.pageNo + 1;
       this.getNewData();
     },
     gotoPage(pageNo) {
-      if (pageNo < 1 || pageNo > this.pageInfo.totalPages) {
+      if (pageNo < 1 || pageNo > this.totalPages) {
         alert("超出范围");
         return;
       }
