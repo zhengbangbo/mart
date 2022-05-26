@@ -50,6 +50,13 @@ export default [
     path: '/addcartsuccess',
     component: AddCartSuccess,
     meta: { show: true },
+    beforeEnter: (to, from, next) => {
+      if (from.path.indexOf('detail') != -1) {
+        next()
+      } else {
+        next(false)
+      }
+    }
   },
   {
     path: '/shopcart',
@@ -60,16 +67,38 @@ export default [
     path: '/trade',
     component: Trade,
     meta: { show: true },
+    beforeEnter: (to, from, next) => {
+      if(from.path== '/shopcart'){
+        next()
+      }else{
+        next(false)
+      }
+    }
   },
   {
     path: '/pay',
     component: Pay,
     meta: { show: true },
+    beforeEnter: (to, from, next) => {
+      if(from.path== '/trade'){
+        next()
+      }else{
+        next(false)
+      }
+    }
   },
   {
     path: '/paysuccess',
     component: PaySuccess,
-    meta: { show: true }
+    beforeEnter: (to, from, next) => {
+      if (from.path == '/pay') {
+        next()
+      }else {
+        next(false)
+      }
+    
+    },
+    meta: { show: true },
   },
   {
     path: '/center',

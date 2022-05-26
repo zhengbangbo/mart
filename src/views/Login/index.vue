@@ -72,7 +72,11 @@ export default {
         phone &&
           password &&
           (await this.$store.dispatch("userLogin", { phone, password }));
-        this.$router.replace("/home");
+        if (this.$route.query.redirect) {
+          this.$router.push(this.$route.query.redirect);
+        } else {
+          this.$router.push("/");
+        }
       } catch (error) {
         alert(error);
       }

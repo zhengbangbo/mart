@@ -72,7 +72,16 @@ router.beforeEach(async (to, from, next) => {
       }
     }
   } else {
-    next()
+    // 未登录状态
+    let toPath = to.path
+    if (to.path.indexOf('trade') != -1 ||
+      to.path.indexOf('pay') != -1 ||
+      to.path.indexOf('center') != -1) {
+      next("/login?redirect=" + toPath)
+    }
+    else {
+      next()
+    }
   }
 })
 
