@@ -1,39 +1,23 @@
-// 引入一级路由组件
-import Home from '@/views/Home'
-import Login from '@/views/Login'
-import Register from '@/views/Register'
-import Search from '@/views/Search'
-import Detail from '@/views/Detail'
-import AddCartSuccess from '@/views/AddCartSuccess'
-import ShopCart from '@/views/ShopCart'
-import Trade from '@/views/Trade'
-import Pay from '@/views/Pay'
-import PaySuccess from '@/views/PaySuccess'
-import Center from '@/views/Center'
-// 引入二级路由组件
-import MyOrder from '@/views/Center/MyOrder'
-import GroupOrder from '@/views/Center/GroupOrder'
-
 export default [
   {
     path: '/home',
-    component: Home,
+    component: () => import('@/views/Home'),
     meta: { show: true }
   },
   {
     path: '/login',
-    component: Login,
+    component: () => import('@/views/Login'),
     meta: { show: true }
   },
   {
     path: '/register',
-    component: Register,
+    component: () => import('@/views/Register'),
     meta: { show: false }
 
   },
   {
     path: '/search/:keyword?',
-    component: Search,
+    component: () => import('@/views/Search'),
     meta: { show: true },
     name: "search",
   },
@@ -43,12 +27,12 @@ export default [
   },
   {
     path: '/detail/:id',
-    component: Detail,
+    component: () => import('@/views/Detail'),
     meta: { show: true },
   },
   {
     path: '/addcartsuccess',
-    component: AddCartSuccess,
+    component: () => import('@/views/AddCartSuccess'),
     meta: { show: true },
     beforeEnter: (to, from, next) => {
       if (from.path.indexOf('detail') != -1) {
@@ -60,57 +44,57 @@ export default [
   },
   {
     path: '/shopcart',
-    component: ShopCart,
+    component: () => import('@/views/ShopCart'),
     meta: { show: true },
   },
   {
     path: '/trade',
-    component: Trade,
+    component: () => import('@/views/Trade'),
     meta: { show: true },
     beforeEnter: (to, from, next) => {
-      if(from.path== '/shopcart'){
+      if (from.path == '/shopcart') {
         next()
-      }else{
+      } else {
         next(false)
       }
     }
   },
   {
     path: '/pay',
-    component: Pay,
+    component: () => import('@/views/Pay'),
     meta: { show: true },
     beforeEnter: (to, from, next) => {
-      if(from.path== '/trade'){
+      if (from.path == '/trade') {
         next()
-      }else{
+      } else {
         next(false)
       }
     }
   },
   {
     path: '/paysuccess',
-    component: PaySuccess,
+    component: () => import('@/views/PaySuccess'),
     beforeEnter: (to, from, next) => {
       if (from.path == '/pay') {
         next()
-      }else {
+      } else {
         next(false)
       }
-    
+
     },
     meta: { show: true },
   },
   {
     path: '/center',
-    component: Center,
+    component: () => import('@/views/Center'),
     children: [
       {
         path: 'myorder',
-        component: MyOrder,
+        component: () => import('@/views/Center/MyOrder'),
       },
       {
         path: 'grouporder',
-        component: GroupOrder,
+        component: () => import('@/views/Center/GroupOrder'),
       }
     ],
     redirect: '/center/myorder',
