@@ -39,3 +39,4 @@ export const reqPayInfo = (orderId) => requests({url: `/payment/weixin/createNat
 
 export const reqPayStatus = (orderId) => requests({ url: `/payment/weixin/queryPayStatus/${orderId}`, method: 'get' })
 
+export const reqAllOrderList = (page, limit) => requests({url: `/order/auth/${page}/${limit}`, method: 'get'})
