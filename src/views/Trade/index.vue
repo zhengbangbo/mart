@@ -150,7 +150,6 @@ export default {
       address.isDefault = 1;
     },
     async submitOrder() {
-      console.log(this.$API);
       let tradeNo = this.orderList.tradeNo;
       let data = {
         consignee: this.userDefaultAddress.consignee,

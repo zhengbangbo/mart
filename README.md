@@ -1,12 +1,15 @@
-# market front vue2 app
+# Web 商城
 
+## 技术栈
 * vue2 + vue-router3 + vuex3
 * less + element-ui + swiper + qrcode + nprogress
 * vue-lazyload + lodash
 * axios + mockjs
 * uuid
 
-项目跟[视频教程](https://www.bilibili.com/video/BV1Vf4y1T7bw)完成，API为视频教程提供。
+测试账号：13700000000
+测试密码：111111
 
-因为API常常崩溃，之后会自己模仿API重写一个。
+## 相关
 
+- [视频教程](https://www.bilibili.com/video/BV1Vf4y1T7bw)

@@ -115,7 +115,6 @@ export default {
     async getPayInfo() {
       let result = await this.$API.reqPayInfo(this.orderId);
       if (result.code == 200) {
-        console.log(result);
         this.payInfo = result.data;
       }
     },
@@ -123,7 +122,6 @@ export default {
       let url = await QRCode.toDataURL(this.payInfo.codeUrl);
       this.$alert(`<img src=${url} />`, "HTML 片段", {
         beforeClose: (action, instance, done) => {
-          console.log(action, instance, done);
           if (action == "cancel") {
             alert("请联系管理员");
             clearInterval(this.timer);
@@ -149,7 +147,6 @@ export default {
       if (!this.timer) {
         this.timer = setInterval(async () => {
           let result = await this.$API.reqPayStatus(this.orderId);
-          console.log(result);
           if (result.code == 200) {
             clearInterval(this.timer);
             this.timer = null;
