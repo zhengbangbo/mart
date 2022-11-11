@@ -21,7 +21,7 @@
             />
           </li>
           <li class="cart-list-con2">
-            <img :src="cart.imgUrl" />
+            <img :src="imgDefault(cart.imgUrl)" />
             <div class="item-msg">
               {{ cart.skuName }}
             </div>
@@ -102,6 +102,7 @@
 <script>
 import { mapGetters } from "vuex";
 import { throttle, debounce } from "lodash";
+import { imgDefault } from '../../utils/utils'
 export default {
   name: "ShopCart",
   computed: {
@@ -135,6 +136,7 @@ export default {
     this.getData();
   },
   methods: {
+    imgDefault,
     getData: debounce(function () {
       this.$store.dispatch("cartList");
     }, 1000),

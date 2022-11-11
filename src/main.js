@@ -12,7 +12,7 @@ Vue.component(ThePagination.name, ThePagination)
 // 第三方组件
 import { MessageBox } from 'element-ui';
 // 原型链上全局方法对象
-Vue.prototype.$msgbox = MessageBox;  
+Vue.prototype.$msgbox = MessageBox;
 Vue.prototype.$alert = MessageBox.alert;
 
 import router from '@/router'
@@ -32,6 +32,11 @@ Vue.use(VueLazyload, {
 })
 
 Vue.config.productionTip = false
+
+Vue.filter("imgDefault", function(value) {
+  console.dir(value);
+  return value
+})
 new Vue({
   el: "#app",
   render: h => h(App),

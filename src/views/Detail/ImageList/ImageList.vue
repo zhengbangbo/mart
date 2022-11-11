@@ -8,7 +8,7 @@
       >
         <img
           :class="{ active: currentIndex == index }"
-          :src="slide.imgUrl"
+          :src="imgDefault(slide.imgUrl)"
           @click="chooseImg(index)"
         />
       </div>
@@ -21,6 +21,7 @@
 <script>
 import Swiper from "swiper/bundle";
 import "swiper/css/bundle";
+import { imgDefault } from '../../../utils/utils'
 export default {
   name: "ImageList",
   props: ["skuImageList"],
@@ -35,6 +36,7 @@ export default {
       // 兄弟通信
       this.$bus.$emit("imgIndex", index)
     },
+    imgDefault
   },
   watch: {
     // 监听只能保证数据，不能保证DOM
@@ -42,7 +44,7 @@ export default {
       this.$nextTick(() => {
         new Swiper(this.$refs.cur, {
           slidesPerView: "3",
-          
+
           navigation: {
             nextEl: ".swiper-button-next",
             prevEl: ".swiper-button-prev",

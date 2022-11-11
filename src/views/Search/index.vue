@@ -64,7 +64,7 @@
                 <div class="list-wrap">
                   <div class="p-img">
                     <router-link :to="`/detail/${good.id}`">
-                      <img v-lazy="good.defaultImg"
+                      <img v-lazy="imgDefault(good.defaultImg)"
                     /></router-link>
                   </div>
                   <div class="price">
@@ -114,6 +114,7 @@
 <script>
 import SearchSelector from "./SearchSelector/SearchSelector";
 import { mapGetters } from "vuex";
+import { imgDefault } from '../../utils/utils'
 export default {
   name: "SearchView",
   components: {
@@ -232,6 +233,7 @@ export default {
       this.searchParams.pageNo = pageNo;
       this.getNewData();
     },
+    imgDefault
   },
   watch: {
     $route() {
