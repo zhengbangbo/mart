@@ -62,7 +62,6 @@ export default {
       try {
         const { phone } = this;
         phone && (await this.$store.dispatch("sendCode", phone));
-        console.log(this.$store);
         this.code = this.$store.state.user.sendCode;
       } catch (e) {
         alert(e);

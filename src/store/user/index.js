@@ -16,7 +16,6 @@ const mutations = {
     state.token = token
   },
   USER_LOGOUT(state) {
-    console.log("hello")
     state.token = ""
     state.userInfo = ""
     localStorage.removeItem("token")

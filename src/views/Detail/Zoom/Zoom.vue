@@ -1,15 +1,16 @@
 <template>
   <div class="spec-preview">
-    <img :src="imgObj.imgUrl" />
+    <img :src="imgDefault(imgObj.imgUrl)" />
     <div class="event" @mousemove="handler"></div>
     <div class="big" >
-      <img :src="imgObj.imgUrl" ref="big"/>
+      <img :src="imgDefault(imgObj.imgUrl)" ref="big"/>
     </div>
     <div class="mask" ref="mask"></div>
   </div>
 </template>
 
 <script>
+import { imgDefault } from '../../../utils/utils'
 export default {
   name: "TheZoom",
   props: ["skuImageList"],
@@ -51,6 +52,7 @@ export default {
       big.style.left = -2 * left + "px";
       big.style.top = -2 * top + "px";
     },
+    imgDefault
   },
 };
 </script>

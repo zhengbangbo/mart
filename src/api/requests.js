@@ -3,8 +3,10 @@ import nprogress from 'nprogress'
 import "nprogress/nprogress.css"
 import store from '@/store'
 
+const API_HOST = 'https://demo-sph.zbb.workers.dev'
+
 const requests = axios.create({
-  baseURL: "/api",
+  baseURL: `${API_HOST}/api`,
   timeout: 5000,
 })
 

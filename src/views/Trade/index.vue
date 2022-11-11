@@ -40,7 +40,7 @@
           :key="item.id"
         >
           <li>
-            <img style="width: 100px" :src="item.imgUrl" alt="" />
+            <img style="width: 100px" :src="imgDefault(item.imgUrl)" alt="" />
           </li>
           <li>
             <p>
@@ -112,6 +112,7 @@
 
 <script>
 import { mapState } from "vuex";
+import { imgDefault } from '../../utils/utils'
 export default {
   name: "iTrade",
   data() {
@@ -143,6 +144,7 @@ export default {
     this.$store.dispatch("orderList");
   },
   methods: {
+    imgDefault,
     changeDefault(address, addressList) {
       addressList.forEach((item) => {
         item.isDefault = 0;
@@ -150,7 +152,6 @@ export default {
       address.isDefault = 1;
     },
     async submitOrder() {
-      console.log(this.$API);
       let tradeNo = this.orderList.tradeNo;
       let data = {
         consignee: this.userDefaultAddress.consignee,

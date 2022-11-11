@@ -21,6 +21,8 @@ const getters = {
     return state.searchInfo.attrsList || [] // 没有网络的情况
   },
   goodsList(state) {
+    console.log("goodsList: ", state)
+    // const result = state.searchInfo.goodsList
     return state.searchInfo.goodsList || []
   },
   trademarkList(state) {

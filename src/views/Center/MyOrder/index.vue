@@ -39,7 +39,7 @@
             <tr v-for="(item, index) in order.orderDetailList" :key="item.id">
               <td width="60%">
                 <div class="typographic">
-                  <img style="width: 50px" :src="item.imgUrl" />
+                  <img style="width: 50px" :src="imgDefault(item.imgUrl)" />
                   <a href="#" class="block-text">{{ item.skuName }}</a>
                   <span>x{{ item.skuNum }}</span>
                   <a href="#" class="service">售后申请</a>
@@ -157,6 +157,7 @@
 
 <script>
 import Pagination from '@/components/Pagination';
+import { imgDefault } from '../../../utils/utils'
 export default {
     name: "MyOrder",
     data() {
@@ -170,6 +171,7 @@ export default {
         this.getData();
     },
     methods: {
+      imgDefault,
         async getData() {
             const { page, limit } = this;
             let result = await this.$API.reqAllOrderList(page, limit);
