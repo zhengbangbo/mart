@@ -1,9 +1,9 @@
 <template>
   <div class="spec-preview">
-    <img :src="imgDefault" />
+    <img :src="imgDefault(imgObj.imgUrl)" />
     <div class="event" @mousemove="handler"></div>
     <div class="big" >
-      <img :src="imgDefault" ref="big"/>
+      <img :src="imgDefault(imgObj.imgUrl)" ref="big"/>
     </div>
     <div class="mask" ref="mask"></div>
   </div>
@@ -52,8 +52,8 @@ export default {
       big.style.left = -2 * left + "px";
       big.style.top = -2 * top + "px";
     },
+    imgDefault
   },
-  imgDefault
 };
 </script>
 
