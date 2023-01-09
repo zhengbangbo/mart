@@ -3,10 +3,11 @@ import nprogress from 'nprogress'
 import "nprogress/nprogress.css"
 import store from '@/store'
 
-const API_HOST = 'https://demo-sph.zbb.workers.dev'
+const REFLARE_PROXY = 'https://cors-anywhere.zbb.workers.dev/'
+const API_HOST = 'http://gmall-h5-api.atguigu.cn'
 
 const requests = axios.create({
-  baseURL: `${API_HOST}/api`,
+  baseURL: `${REFLARE_PROXY+API_HOST}/api`,
   timeout: 5000,
 })
 
